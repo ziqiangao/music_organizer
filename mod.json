@@ -10,9 +10,16 @@
 	"name": "Music Organizer",
 	"version": "v0.1.1",
 	"developer": "ZiqGao",
-	"description": "Mod To Organize All Downloaded Aserts Into Their GDPS Folders",
+	"description": "Mod To Organize All Downloaded Asserts Into Their GDPS Folders",
 	"dependencies": {
-  "km7dev.server_api": ">=2.0.0"
- },
- "tags": ["music"]
+		"km7dev.server_api": ">=2.0.0"
+	},
+	"tags": [
+		"music"
+	],
+	"resources": {
+		"sprites": [
+			"resources/savedSongsBtn.png"
+		]
+	}
 }

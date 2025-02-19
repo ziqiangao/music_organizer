@@ -76,35 +76,35 @@ class $modify(MusicDownloadManager) {
     gd::string pathForSong(int p0) {
         geode::log::debug("pathForSong");
     
-        // Ensure no extra slash at the end of folder
         std::string fullPath = std::string(folder);
-        if (fullPath.back() == '\\' || fullPath.back() == '/') {
-            fullPath.pop_back();  // Remove the last slash if it exists
+        if (!fullPath.empty() && (fullPath.back() == '\\' || fullPath.back() == '/')) {
+            fullPath.pop_back(); // Remove trailing slash
         }
-        
-        // Corrected concatenation
-        fullPath += gd::string("/") + getDomain() + "/Songs/" + gd::string(std::to_string(p0)) + ".ogg";
+    
+        // Fix concatenation issues
+        fullPath.append("/").append(getDomain().c_str()).append("/Songs/").append(std::to_string(p0)).append(".ogg");
     
         // Replace backslashes with forward slashes for consistency
         std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
     
-        // Create the directory up to `Songs/`
+        // Ensure directories exist
         std::string directoryPath = fullPath.substr(0, fullPath.find_last_of('/'));
         createDirectoryIfNeeded(directoryPath);
     
         return gd::string(fullPath);
     }
+    
     
 
     gd::string pathForSFX(int p0) {
         geode::log::debug("pathForSFX");
     
         std::string fullPath = std::string(folder);
-        if (fullPath.back() == '\\' || fullPath.back() == '/') {
+        if (!fullPath.empty() && (fullPath.back() == '\\' || fullPath.back() == '/')) {
             fullPath.pop_back();
         }
     
-        fullPath += gd::string("/") + getDomain() + "/SFX/" + gd::string(std::to_string(p0)) + ".ogg";
+        fullPath.append("/").append(getDomain().c_str()).append("/SFX/").append(std::to_string(p0)).append(".ogg");
     
         std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
     
@@ -113,5 +113,6 @@ class $modify(MusicDownloadManager) {
     
         return gd::string(fullPath);
     }
+    
     
 };

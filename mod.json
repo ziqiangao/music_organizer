@@ -8,7 +8,7 @@
 	},
 	"id": "ziqgao.music_organizer",
 	"name": "Music Organizer",
-	"version": "v0.1.0",
+	"version": "v0.1.1",
 	"developer": "ZiqGao",
 	"description": "Mod To Organize All Downloaded Aserts Into Their GDPS Folders",
 	"dependencies": {

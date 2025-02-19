@@ -1,33 +1,64 @@
-# Gradle files
-.gradle/
-build/
+# Prerequisites
+*.d
 
-# Local configuration file (sdk path, etc)
-local.properties
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
 
-# Log/OS Files
-*.log
+# Precompiled Headers
+*.gch
+*.pch
 
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.apk
-output.json
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
 
-# IntelliJ
-*.iml
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Macos be like
+**/.DS_Store
+
+# Cache files for Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Ignore build folders
+**/build
+# Ignore platform specific build folders
+build-*/
+
+# Workspace files are user-specific
+*.sublime-workspace
+
+# ILY vscode
+**/.vscode
+
+# Local History for Visual Studio Code
+.history/
+
+# clangd
+.cache/
+
+# Visual Studio
+.vs/
+
+# CLion
 .idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
-
-# Keystore files
-*.jks
-*.keystore
-
-# Google Services (e.g. APIs or Firebase)
-google-services.json
-
-# Android Profiling
-*.hprof
+/cmake-build-*/

@@ -1,0 +1,18 @@
+{
+	"geode": "4.2.0",
+	"gd": {
+		"win": "2.2074",
+		"android": "2.2074",
+		"mac": "2.2074",
+		"ios": "2.2074"
+	},
+	"id": "ziqgao.music_organizer",
+	"name": "Music Organizer",
+	"version": "v0.1.0",
+	"developer": "ZiqGao",
+	"description": "Mod To Organize All Downloaded Aserts Into Their GDPS Folders",
+	"dependencies": {
+  "km7dev.server_api": ">=2.0.0"
+ },
+ "tags": ["music"]
+}

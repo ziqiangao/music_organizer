@@ -105,15 +105,14 @@ class $modify(MusicDownloadManager)
         std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
 
         // Ensure directories exist
-        std::string directoryPath = fullPath.substr(0, fullPath.find_last_of('/'));
-        createDirectoryIfNeeded(directoryPath);
+        createDirectoryIfNeeded(fullPath);
 
         return gd::string(fullPath);
     }
 
     gd::string pathForSFX(int p0)
     {
-        geode::log::debug("pathForSFX");
+        
 
         std::string fullPath = std::string(folder);
         if (!fullPath.empty() && (fullPath.back() == '\\' || fullPath.back() == '/'))
@@ -121,16 +120,14 @@ class $modify(MusicDownloadManager)
             fullPath.pop_back();
         }
 
-        fullPath.append("/").append(getDomain().c_str()).append("/SFX/").append(std::to_string(p0)).append(".ogg");
+        fullPath.append("/").append(getDomain().c_str()).append("/SFX/s").append(std::to_string(p0)).append(".ogg");
 
         std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
 
-        std::string directoryPath = fullPath.substr(0, fullPath.find_last_of('/'));
-        createDirectoryIfNeeded(directoryPath);
-
+        createDirectoryIfNeeded(fullPath);
+    geode::log::debug("pathForSFX {}",fullPath);
         return gd::string(fullPath);
     }
-    // Required for checking file existence
 
     bool isSongDownloaded(int p0)
     {
@@ -144,5 +141,19 @@ class $modify(MusicDownloadManager)
         }
 
         return false;
+    }
+    
+    gd::string pathForSFXFolder(int p0) {
+        std::string fullPath = std::string(folder);
+        if (!fullPath.empty() && (fullPath.back() == '\\' || fullPath.back() == '/'))
+        {
+            fullPath.pop_back();
+        }
+        
+        fullPath.append("/").append(getDomain().c_str()).append("/SFX/");
+
+        createDirectoryIfNeeded(fullPath);
+        log::info("{}",fullPath);
+        return gd::string(fullPath);
     }
 };

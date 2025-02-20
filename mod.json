@@ -8,7 +8,7 @@
 	},
 	"id": "ziqgao.music_organizer",
 	"name": "Music Organizer",
-	"version": "v1.0.1",
+	"version": "v1.0.2",
 	"developer": "ZiqGao",
 	"description": "Mod To Organize All Downloaded Asserts Into Their GDPS Folders",
 	"dependencies": {
@@ -17,9 +17,7 @@
 	"tags": [
 		"music"
 	],
-	"resources": {
-		"sprites": [
-			"resources/savedSongsBtn.png"
-		]
+	"links": {
+		"source": "https://github.com/ziqiangao/music_organizer"
 	}
 }

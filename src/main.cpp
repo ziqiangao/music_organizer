@@ -14,7 +14,6 @@ void showSSMenu()
     sb->showLayer(true);
 }
 
-
 namespace fs = std::filesystem;
 
 using namespace geode::prelude;
@@ -112,7 +111,6 @@ class $modify(MusicDownloadManager)
 
     gd::string pathForSFX(int p0)
     {
-        
 
         std::string fullPath = std::string(folder);
         if (!fullPath.empty() && (fullPath.back() == '\\' || fullPath.back() == '/'))
@@ -125,13 +123,13 @@ class $modify(MusicDownloadManager)
         std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
 
         createDirectoryIfNeeded(fullPath);
-    geode::log::debug("pathForSFX {}",fullPath);
+        geode::log::debug("pathForSFX {}", fullPath);
         return gd::string(fullPath);
     }
 
     bool isSongDownloaded(int p0)
     {
-        log::info("Checked {}", std::to_string(p0));
+        log::debug("Checked Song {}", std::to_string(p0));
         std::string songPath = std::string(pathForSong(p0)); // Convert gd::string to std::string
 
         // Check if the file exists in the specified path
@@ -143,17 +141,11 @@ class $modify(MusicDownloadManager)
         return false;
     }
     
-    gd::string pathForSFXFolder(int p0) {
-        std::string fullPath = std::string(folder);
-        if (!fullPath.empty() && (fullPath.back() == '\\' || fullPath.back() == '/'))
-        {
-            fullPath.pop_back();
-        }
-        
-        fullPath.append("/").append(getDomain().c_str()).append("/SFX/");
-
-        createDirectoryIfNeeded(fullPath);
-        log::info("{}",fullPath);
-        return gd::string(fullPath);
+    static MusicDownloadManager *sharedState()
+    {
+        auto p = MusicDownloadManager::sharedState();
+        p->m_resourceSfxUnorderedSet.clear();
+        p->m_resourceSongUnorderedSet.clear();
+        return p;
     }
 };

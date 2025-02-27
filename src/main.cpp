@@ -7,6 +7,9 @@
 #include <Geode/binding/GJSongBrowser.hpp>
 #include <Geode/ui/BasedButtonSprite.hpp>
 #include <Geode/binding/DialogObject.hpp>
+#include <Geode/modify/OptionsLayer.hpp>
+#include "songItem.hpp"
+#include <Geode/binding/GameManager.hpp>
 
 void showSSMenu()
 {
@@ -15,13 +18,20 @@ void showSSMenu()
     sb->showLayer(true);
 }
 
+// Namespaces
 namespace fs = std::filesystem;
-
 using namespace geode::prelude;
 
-auto p = MusicDownloadManager::sharedState();
-gd::string folder = p->pathForSongFolder(0); // Folder already contains the correct base path
+// Vars
+auto p = MusicDownloadManager::sharedState(); // Music Download Manager Singleton
+gd::string folder = Mod::get()->getSettingValue<std::filesystem::path>("song-location").string(); // Song Location Setting
+bool exportlist = Mod::get()->getSettingValue<bool>("exportlist"); // Export List Setting
+std::string listfmt = Mod::get()->getSettingValue<std::string>("listfmt"); // File Format Of The Exported List Setting
+std::string listName = Mod::get()->getSettingValue<std::string>("listname"); // Name Of Exported List Setting
 
+/*
+* Gets The Current Domanin using km7dev's Server API
+*/
 gd::string getDomain()
 {
     // Get the server URL
@@ -66,6 +76,7 @@ gd::string getDomain()
     return domain;
 }
 
+
 void createDirectoryIfNeeded(const std::string &path)
 {
     std::string directoryPath = path.substr(0, path.find_last_of('/'));
@@ -77,31 +88,70 @@ void createDirectoryIfNeeded(const std::string &path)
         geode::log::info("Created directory: {}", directoryPath);
     }
 }
+
+class $modify(OptionsLayer) {
+    void onSoundtracks(CCObject* sender) {
+        showSSMenu();
+    }
+};
+
 int i = 0;
 class $modify(MenuLayer)
 {
-    void onMoreGames(CCObject *target)
-    {
-        showSSMenu();
-    }
-
-    void onRobTop(CCObject *sender)
+    void onRobTop(CCObject *sender) // Debug Info
     {
         switch (i) {
         case 0:
             CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
                 DialogObject::create("Debug (Song Path)", p->pathForSong(0), 2, 1.0f, true, ccWHITE), 2
             ));
-            i = 1;
+            i += 1;
             break;
             
         case 1:
             CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
                 DialogObject::create("Debug (SFX Path)", p->pathForSFX(0), 4, 1.0f, true,ccWHITE), 2
             ));
-            i = 2;
+            i += 1;
             break;
         case 2:
+            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
+                DialogObject::create("Debug (Settings->Save Songs List)", exportlist ? "True" : "False", 17, 1.0f, true,ccWHITE), 2
+            ));
+            i += 1;
+            break;
+        case 3:
+            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
+                DialogObject::create("Debug (Settings->List Format)", listfmt, 28, 1.0f, true,ccWHITE), 2
+            ));
+            i += 1;
+            break;
+        case 4:
+            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
+                DialogObject::create("Debug (Settings->List Name)", listName, 17, 1.0f, true,ccWHITE), 2
+            ));
+            i += 1;
+            break;
+        case 5:
+            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
+                DialogObject::create("Debug (Song Info Test)", songItem(*static_cast<SongInfoObject*>(p->getDownloadedSongs()->randomObject())).toString(), 28, 1.0f, true,ccWHITE), 2
+            ));
+            i += 1;
+            break;
+        case 6:
+            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
+                DialogObject::create("Debug (Menu Song)", GameManager::get()->m_customMenuSongID ? songItem(*static_cast<SongInfoObject*>(p->getSongInfoObject(GameManager::get()->m_customMenuSongID))).toString() : "NONE", 28, 1.0f, true,ccWHITE), 2
+            ));
+            i += 1;
+            break;
+        case 7:
+            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
+                DialogObject::create("Debug (Practice Song)", GameManager::get()->m_customPracticeSongID ? songItem(*static_cast<SongInfoObject*>(p->getSongInfoObject(GameManager::get()->m_customPracticeSongID))).toString() : "NONE", 28, 1.0f, true,ccWHITE), 2
+            ));
+            i += 1;
+            break;
+        default:
+
             CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
                 DialogObject::create("Key Master", "What are doing here!?!?", 18, 1.0f, true,ccWHITE), 2
             ));
@@ -152,27 +202,26 @@ class $modify(MusicDownloadManager)
         return gd::string(fullPath);
     }
 
-    bool isSongDownloaded(int p0)
-    {
+    gd::string pathForSFXFolder(int p0) {
+        gd::string ret = folder;
+        
+        return ret;
+    }
 
-        std::string songPath = std::string(pathForSong(p0)); // Convert gd::string to std::string
-
-        // Check if the file exists in the specified path
-        if (std::filesystem::exists(songPath))
-        {
-            log::debug("Checked Song {} Exists", std::to_string(p0));
-            return true;
-        }
-        log::debug("Checked Song {} Not Downloaded", std::to_string(p0));
-        return false;
+    gd::string pathForSongFolder(int p0) {
+        gd::string ret = folder;
+        
+        return ret;
     }
 
     static MusicDownloadManager *sharedState()
     {
-        log::info("Cleared Resource IDS");
+        
         auto p = MusicDownloadManager::sharedState();
+        if (!p->m_resourceSfxUnorderedSet.empty()) {
         p->m_resourceSfxUnorderedSet.clear();
         p->m_resourceSongUnorderedSet.clear();
+        log::info("Cleared Resource IDS");}
         return p;
     }
 };

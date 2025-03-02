@@ -48,3 +48,16 @@ std::string songItem::toString() const {
     
     return oss.str();  // Return the formatted string
 }
+
+std::string songItem::ArtistsAsString() const {
+    std::ostringstream oss;
+    
+    // Join all artists in the deque into a single string
+    for (auto it = Artists.begin(); it != Artists.end(); ++it) {
+        if (it != Artists.begin()) {
+            oss << ", ";  // Add a comma separator between artists
+        }
+        oss << *it;  // Append the artist name
+    }
+    return oss.str();  // Return the formatted string
+}

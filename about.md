@@ -12,3 +12,7 @@ Simply Press the More Games button, and the saved songs menu will open up.
     - This Is Due To Resource Over-riding, Until Geode adds a way to download songs from code or until I add the resources into the folder
     - Either Copy the files from the resource folder into the mods folder, which is Appdata/{URL}
     - Or Go to Robsvault Account to download the required asserts
+
+## Known Incompatabilities
+- Menu Loop Randomizer
+    - The Mod Won't Find Any Songs

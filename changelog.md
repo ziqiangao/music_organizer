@@ -1,5 +1,10 @@
 # Change Log
 
+## v1.1.0
+Added Song List Saving
+Added Customization Settings
+Some Other Minor Changes
+
 ## v1.0.3
 Formatting Changes + Debug Info
 
@@ -12,7 +17,7 @@ Such As Built-in SFX's, it now downloads from the servers
 Fixed A Critical bug related to directory creation
 
 ## v1.0.0
-Added some convince features
+Added some convinience features
 
 Fix Bugs related to song list
 

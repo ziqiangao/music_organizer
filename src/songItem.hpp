@@ -19,6 +19,7 @@ struct songItem {
 
     // Member function to convert to a string with format: {artists} - {name}, ID: {id}
     std::string toString() const;
+    std::string ArtistsAsString() const;
 };
 
 #endif // SONGITEM_HPP

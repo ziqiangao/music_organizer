@@ -37,7 +37,7 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           bindings: geode-sdk/bindings
-          bindings-ref: main
+          bindings-ref: nightly  # Use nightly instead of main
           combine: true
           target: ${{ matrix.config.target }}
 

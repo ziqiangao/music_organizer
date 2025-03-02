@@ -149,7 +149,7 @@ void songListMan::SaveJSON(const std::vector<songItem>& songs) {
         outFile << song.ArtistsAsString() << "\",\"Name\":\""; 
         outFile << song.Name << "\",\"ID\":\""; 
         outFile << song.ID << "\",\"Path\":\""; 
-        outFile << MusicDownloadManager::sharedState()->pathForSong(song.ID); 
+        outFile << std::string(MusicDownloadManager::sharedState()->pathForSong(song.ID)); 
         outFile << "\"}";
     
         // Check if it's not the last item to append a comma
@@ -181,7 +181,7 @@ void songListMan::SaveM3U(const std::vector<songItem>& songs) {
     for (const auto& song : songs) {
         outFile << "#EXTINF:-1,";
         outFile << song.toString() << std::endl;
-        outFile << "file:///" << MusicDownloadManager::sharedState()->pathForSong(song.ID) << std::endl << std::endl;
+        outFile << "file:///" << std::string(MusicDownloadManager::sharedState()->pathForSong(song.ID)) << std::endl << std::endl;
     }
 
     outFile.close();

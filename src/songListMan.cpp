@@ -114,7 +114,7 @@ std::vector<songItem> songListMan::compileIntoVector(cocos2d::CCArray* List) {
 
 void songListMan::SaveTXT(const std::vector<songItem>& songs)
 {
-    std::string filePath = std::string(listName + "@" + getDomain()).append(".txt");
+    std::string filePath = std::string(std::string(listName) + "@" + std::string(getDomain())).append(".txt");
     auto outFile = openFile(filePath);
 
     if (!outFile) {
@@ -133,7 +133,7 @@ void songListMan::SaveTXT(const std::vector<songItem>& songs)
 }
 
 void songListMan::SaveJSON(const std::vector<songItem>& songs) {
-    std::string filePath = std::string(listName + "@" + getDomain()).append(".json");
+    std::string filePath = std::string(std::string(listName) + "@" + std::string(getDomain())).append(".json");
     auto outFile = openFile(filePath);
 
     if (!outFile) {
@@ -167,7 +167,7 @@ void songListMan::SaveJSON(const std::vector<songItem>& songs) {
 }
 
 void songListMan::SaveM3U(const std::vector<songItem>& songs) {
-    std::string filePath = std::string(listName + "@" + getDomain()).append(".m3u");
+    std::string filePath = std::string(std::string(listName) + "@" + std::string(getDomain())).append(".m3u");
     auto outFile = openFile(filePath);
 
     if (!outFile) {

@@ -48,7 +48,7 @@ void showSSMenu()
     auto sb = GJSongBrowser::create();
     CCDirector::sharedDirector()->getRunningScene()->addChild(sb);
     sb->showLayer(true);
-    sb->setZOrder(200);
+    sb->setZOrder(CCDirector::sharedDirector()->getRunningScene()->getHighestChildZ() + 1);
 }
 
 class $modify(GJSongBrowser)

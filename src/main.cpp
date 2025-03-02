@@ -27,7 +27,7 @@ gd::string folder = Mod::get()->getSettingValue<std::filesystem::path>("song-loc
 bool exportlist = Mod::get()->getSettingValue<bool>("exportlist");                                // Export List Setting
 std::string listfmt = Mod::get()->getSettingValue<std::string>("listfmt");                        // File Format Of The Exported List Setting
 std::string listName = Mod::get()->getSettingValue<std::string>("listname");                      // Name Of Exported List Setting
-gd::string listLoc = Mod::get()->getSettingValue<std::filesystem::path>("listLocation").string();
+std::string listLoc = Mod::get()->getSettingValue<std::filesystem::path>("listLocation").string();
 
 $execute
 {

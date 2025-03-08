@@ -17,6 +17,9 @@
 #include <Geode/fmod/fmod.hpp>
 #include "MusicOrganizer.h"
 #include <Geode/loader/Dirs.hpp>
+#include <Geode/binding/LevelEditorLayer.hpp>
+#include <Geode/modify/FMODAudioEngine.hpp>
+#include <Geode/binding/MenuLayer.hpp>
 
 // Namespaces
 namespace fs = std::filesystem;
@@ -29,32 +32,48 @@ bool exportlist = Mod::get()->getSettingValue<bool>("exportlist");              
 std::string listfmt = Mod::get()->getSettingValue<std::string>("listfmt");                        // File Format Of The Exported List Setting
 std::string listName = Mod::get()->getSettingValue<std::string>("listname");                      // Name Of Exported List Setting
 std::string listLoc = Mod::get()->getSettingValue<std::filesystem::path>("listLocation").string();
+gd::string music0 = "";
 
-void deleteAudioFiles() {
+std::string getFilenameWithoutExtension(const std::string &fullPath)
+{
+    // Use std::filesystem to get the filename and remove the extension
+    std::filesystem::path p(fullPath);
+    return p.stem().string(); // Get the filename without the extension
+}
+
+void deleteAudioFiles()
+{
     fs::path saveDir = dirs::getSaveDir();
-    geode::log::info("Starting CleanUp");
+    geode::log::info("Starting Clean Up");
 
-    if (!fs::exists(saveDir) || !fs::is_directory(saveDir)) {
+    if (!fs::exists(saveDir) || !fs::is_directory(saveDir))
+    {
         geode::log::warn("Directory does not exist: {}", saveDir.string());
         return;
     }
 
-    try {
-        for (const auto& entry : fs::directory_iterator(saveDir)) {
-            if (entry.is_regular_file()) {
+    try
+    {
+        for (const auto &entry : fs::directory_iterator(saveDir))
+        {
+            if (entry.is_regular_file())
+            {
                 std::string ext = entry.path().extension().string();
-                if (ext == ".mp3" || ext == ".ogg") {
+                if (ext == ".mp3" || ext == ".ogg")
+                {
                     fs::remove(entry.path());
                     geode::log::info("Deleted: {}", entry.path().string());
                 }
             }
         }
-    } catch (const fs::filesystem_error& e) {
+    }
+    catch (const fs::filesystem_error &e)
+    {
         geode::log::error("Filesystem error: {}", e.what());
     }
 }
 
-void moveAllFolders(const fs::path& from, const fs::path& to)
+void moveAllFolders(const fs::path &from, const fs::path &to)
 {
     try
     {
@@ -64,7 +83,7 @@ void moveAllFolders(const fs::path& from, const fs::path& to)
             geode::log::info("Created destination directory: {}", to.string());
         }
 
-        for (const auto& entry : fs::directory_iterator(from))
+        for (const auto &entry : fs::directory_iterator(from))
         {
             if (fs::is_directory(entry.path()))
             {
@@ -74,7 +93,7 @@ void moveAllFolders(const fs::path& from, const fs::path& to)
             }
         }
     }
-    catch (const std::exception& e)
+    catch (const std::exception &e)
     {
         geode::log::warn("Could Not move folders: {}", e.what());
     }
@@ -108,10 +127,31 @@ class $modify(GJSongBrowser)
     void exitLayer(CCObject *p0)
     {
         log::debug("GJSongBrowser::exitLayer");
-        int timeMS = FMODAudioEngine::get()->getMusicTimeMS(0);
-        GJSongBrowser::exitLayer(p0);
-        FMODAudioEngine::get()->playMusic(GameManager::get()->m_customMenuSongID ? p->pathForSong(GameManager::get()->m_customMenuSongID) : "menuLoop.mp3", true, timeMS != 0 ? 0 : 0.5, 0);
-        FMODAudioEngine::get()->setMusicTimeMS(timeMS, true, 0);
+        if (FMODAudioEngine::get()->isMusicPlaying(0) && MenuLayer::get() != nullptr)
+        {
+            log::debug("{}", music0);
+            log::debug("{}", getFilenameWithoutExtension(music0));
+            if (getFilenameWithoutExtension(music0) != "menuLoop")
+            {
+                GameManager::get()->m_customMenuSongID = std::stoi(getFilenameWithoutExtension(music0));
+            }
+            else
+            {
+                GameManager::get()->m_customMenuSongID = 0;
+            }
+        }
+        if (LevelEditorLayer::get() == nullptr)
+        {
+            int timeMS = FMODAudioEngine::get()->getMusicTimeMS(0);
+            GJSongBrowser::exitLayer(p0);
+            FMODAudioEngine::get()->playMusic(GameManager::get()->m_customMenuSongID ? p->pathForSong(GameManager::get()->m_customMenuSongID) : "menuLoop.mp3", true, timeMS != 0 ? 0 : 0.5, 0);
+            FMODAudioEngine::get()->setMusicTimeMS(timeMS, true, 0);
+        }
+        else
+        {
+            log::info("In Editor, Skipping");
+            GJSongBrowser::exitLayer(p0);
+        }
     }
 };
 
@@ -277,5 +317,19 @@ class $modify(AppDelegate)
         std::vector<songItem> SongList = songListMan::compileIntoVector(p->getDownloadedSongs());
         songListMan::Save(SongList);
         AppDelegate::trySaveGame(p0);
+    }
+};
+
+class $modify(FMODAudioEngine)
+{
+    void playMusic(gd::string path, bool shouldLoop, float fadeInTime, int channel)
+    {
+        log::debug("music channel: {}", channel);
+        if (1)
+        {
+            music0 = path;
+            log::debug("music0: {}", path);
+        }
+        FMODAudioEngine::playMusic(path, shouldLoop, fadeInTime, channel);
     }
 };

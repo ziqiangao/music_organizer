@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.2.1
+Quality Of Life Change To Easily Set Menu Song,
+Just Press Play On The Song You Want And Exit
+
 ## v1.2.0
 Added HTML List Support
 Clean Songs On First Install

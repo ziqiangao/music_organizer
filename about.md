@@ -1,11 +1,8 @@
-# About
-This mod eliminate song ID conflicts on GDPS's by sperating the songs into their GDPS folders.
-
-This Mod Also Adds An Easy way of accessing the saved songs menu.
-
-Intead of going to options > audio > saved songs, or editor > level settings > songs.
-
-Simply Press the More Games button, and the saved songs menu will open up.
+# Features
+- Eliminate Song Collisions By Splitting Songs Into Their Own GDPS Folders
+- Easy Way To Access The Song Menu, Simply Open Setttings And Press Songs
+- Ability To Save Songs For Easy Playing In Media Players
+- Easy Way Of Setting Menu Music, Just Press Play and then Exit
 
 ## Known Issues
 - Sounds Do Not Work In the Tower
@@ -15,4 +12,4 @@ Simply Press the More Games button, and the saved songs menu will open up.
 
 ## Known Incompatabilities
 - Menu Loop Randomizer
-    - The Mod Won't Find Any Songs
+    - This Mod Won't Find Any Songs

@@ -8,7 +8,7 @@
 	},
 	"id": "ziqgao.music_organizer",
 	"name": "Music Organizer",
-	"version": "v1.1.0",
+	"version": "v1.2.0",
 	"developer": "ZiqGao",
 	"description": "Mod To Organize All Downloaded Asserts Into Their GDPS Folders",
 	"dependencies": {
@@ -38,7 +38,7 @@
 			"name": "List Format",
 			"enable-if": "exportlist",
 			"description": "Format To Export The List In",
-			"one-of": ["M3U","TXT","JSON"],
+			"one-of": ["M3U","TXT","JSON","HTML"],
 			"default":"M3U"
 		},
 		"listname": {

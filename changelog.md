@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.2.0
+Added HTML List Support
+Clean Songs On First Install
+
 ## v1.1.0
 Added Song List Saving
 Added Customization Settings

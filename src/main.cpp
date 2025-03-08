@@ -16,6 +16,7 @@
 #include <Geode/binding/FMODAudioEngine.hpp>
 #include <Geode/fmod/fmod.hpp>
 #include "MusicOrganizer.h"
+#include <Geode/loader/Dirs.hpp>
 
 // Namespaces
 namespace fs = std::filesystem;
@@ -29,10 +30,61 @@ std::string listfmt = Mod::get()->getSettingValue<std::string>("listfmt");      
 std::string listName = Mod::get()->getSettingValue<std::string>("listname");                      // Name Of Exported List Setting
 std::string listLoc = Mod::get()->getSettingValue<std::filesystem::path>("listLocation").string();
 
+void deleteAudioFiles() {
+    fs::path saveDir = dirs::getSaveDir();
+    geode::log::info("Starting CleanUp");
+
+    if (!fs::exists(saveDir) || !fs::is_directory(saveDir)) {
+        geode::log::warn("Directory does not exist: {}", saveDir.string());
+        return;
+    }
+
+    try {
+        for (const auto& entry : fs::directory_iterator(saveDir)) {
+            if (entry.is_regular_file()) {
+                std::string ext = entry.path().extension().string();
+                if (ext == ".mp3" || ext == ".ogg") {
+                    fs::remove(entry.path());
+                    geode::log::info("Deleted: {}", entry.path().string());
+                }
+            }
+        }
+    } catch (const fs::filesystem_error& e) {
+        geode::log::error("Filesystem error: {}", e.what());
+    }
+}
+
+void moveAllFolders(const fs::path& from, const fs::path& to)
+{
+    try
+    {
+        if (!fs::exists(to))
+        {
+            fs::create_directories(to);
+            geode::log::info("Created destination directory: {}", to.string());
+        }
+
+        for (const auto& entry : fs::directory_iterator(from))
+        {
+            if (fs::is_directory(entry.path()))
+            {
+                fs::path destination = to / entry.path().filename();
+                fs::rename(entry.path(), destination);
+                geode::log::info("Moved folder: {} -> {}", entry.path().string(), destination.string());
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        geode::log::warn("Could Not move folders: {}", e.what());
+    }
+}
+
 $execute
 {
+    deleteAudioFiles();
     listenForSettingChanges("song-location", [](std::filesystem::path value)
-                            { folder = value.string(); log::info("Setting Changed {}", value.string()); });
+                            {folder = value.string(); log::info("Setting Changed {}", value.string()); });
     listenForSettingChanges("exportlist", [](bool value)
                             { exportlist = value; log::info("Setting Changed {}", value ? "True" : "False"); });
     listenForSettingChanges("listfmt", [](std::string value)
@@ -40,7 +92,7 @@ $execute
     listenForSettingChanges("listname", [](std::string value)
                             { listName = value; log::info("Setting Changed {}", value); });
     listenForSettingChanges("listLocation", [](std::filesystem::path value)
-                            { listLoc = value.string(); log::info("Setting Changed {}", value.string());});
+                            { listLoc = value.string(); log::info("Setting Changed {}", value.string()); });
 }
 
 void showSSMenu()
@@ -118,7 +170,7 @@ class $modify(MenuLayer)
             i += 1;
             break;
         case 5:
-            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(DialogObject::create("Debug (Song Info Test)", p->getDownloadedSongs()->count() > 0 ? songItem(*static_cast<SongInfoObject *>(p->getDownloadedSongs()->randomObject())).toString(): "Erm, You Don't Seem To have Any Songs Downloaded, <s100> So We Can't Pick a Song</s>", 28, 1.0f, true, ccWHITE), 2));
+            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(DialogObject::create("Debug (Song Info Test)", p->getDownloadedSongs()->count() > 0 ? songItem(*static_cast<SongInfoObject *>(p->getDownloadedSongs()->randomObject())).toString() : "Erm, You Don't Seem To have Any Songs Downloaded, <s100> So We Can't Pick a Song</s>", 28, 1.0f, true, ccWHITE), 2));
             i += 1;
             break;
         case 6:
@@ -131,8 +183,16 @@ class $modify(MenuLayer)
                 DialogObject::create("Debug (Practice Song)", GameManager::get()->m_customPracticeSongID ? songItem(*static_cast<SongInfoObject *>(p->getSongInfoObject(GameManager::get()->m_customPracticeSongID))).toString() : "<cf><s200>No Song Selected</s></c>", 28, 1.0f, true, ccWHITE), 2));
             i += 1;
             break;
-        default:
 
+        case 8:
+        {
+            bool suc = p->m_songObjects->writeToFile("songs.txt");
+            CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
+                DialogObject::create("Debug (Songs)", suc ? "<cj><s200>Check File songs.txt</s></c>" : "<co><s200>Could Not Write</s></c>", 28, 1.0f, true, ccWHITE), 2));
+            i += 1;
+            break;
+        }
+        default:
             CCDirector::sharedDirector()->getRunningScene()->addChild(DialogLayer::create(
                 DialogObject::create("Key Master", "What are doing <s200><cr>here!?!?</c></s>", 18, 1.0f, true, ccWHITE), 2));
             i = 0;

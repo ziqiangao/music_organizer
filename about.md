@@ -3,6 +3,7 @@
 - Easy Way To Access The Song Menu, Simply Open Setttings And Press Songs
 - Ability To Save Songs For Easy Playing In Media Players
 - Easy Way Of Setting Menu Music, Just Press Play and then Exit
+- Ability to Blacklist songs to not appear in the playlist
 
 ## Known Issues
 - Sounds Do Not Work In the Tower

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <km7dev.server_api/include/ServerAPIEvents.hpp>
 #include "MusicOrganizer.h"
+#include "blacklistMan.hpp"
 
 using namespace geode::prelude;
 
@@ -125,8 +126,12 @@ std::vector<songItem> songListMan::compileIntoVector(cocos2d::CCArray* List) {
     std::vector<songItem> SongList;
     log::info("Compiling Songs To Array");
     for (int i = 0; i < List->count();i++) {
-        SongList.push_back(songItem(*static_cast<SongInfoObject*>(List->objectAtIndex(i))));
+        auto item = songItem(*static_cast<SongInfoObject*>(List->objectAtIndex(i)));
+        if (!blacklistMan::isblacklisted(item.ID)) {
+        SongList.push_back(item);
+    }
     };
+
     return SongList;
 }
 

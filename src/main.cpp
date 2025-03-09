@@ -20,6 +20,7 @@
 #include <Geode/binding/LevelEditorLayer.hpp>
 #include <Geode/modify/FMODAudioEngine.hpp>
 #include <Geode/binding/MenuLayer.hpp>
+#include "blacklistMan.hpp"
 
 // Namespaces
 namespace fs = std::filesystem;
@@ -99,9 +100,10 @@ void moveAllFolders(const fs::path &from, const fs::path &to)
     }
 }
 
-$execute
+$on_mod(Loaded)
 {
     deleteAudioFiles();
+    blacklistMan::loadblacklist();
     listenForSettingChanges("song-location", [](std::filesystem::path value)
                             {folder = value.string(); log::info("Setting Changed {}", value.string()); });
     listenForSettingChanges("exportlist", [](bool value)
@@ -152,7 +154,8 @@ class $modify(GJSongBrowser)
             log::info("In Editor, Skipping");
             GJSongBrowser::exitLayer(p0);
         }
-    }
+    };
+
 };
 
 void createDirectoryIfNeeded(const std::string &path)
@@ -308,16 +311,19 @@ class $modify(MusicDownloadManager)
         }
         return p;
     }
+
+    void downloadCustomSong(int p0) {
+        log::info("{}",p0);
+        this->getSongInfo(p0,true);
+        MusicDownloadManager::downloadCustomSong(p0);
+    }
 };
 
-class $modify(AppDelegate)
+$on_mod(DataSaved)
 {
-    void trySaveGame(bool p0)
-    {
         std::vector<songItem> SongList = songListMan::compileIntoVector(p->getDownloadedSongs());
         songListMan::Save(SongList);
-        AppDelegate::trySaveGame(p0);
-    }
+        blacklistMan::saveBlacklist();
 };
 
 class $modify(FMODAudioEngine)
@@ -333,3 +339,4 @@ class $modify(FMODAudioEngine)
         FMODAudioEngine::playMusic(path, shouldLoop, fadeInTime, channel);
     }
 };
+

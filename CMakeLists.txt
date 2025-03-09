@@ -7,7 +7,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 project(MusicOrganizer VERSION 1.0.0)
 
-add_library(${PROJECT_NAME} SHARED src/main.cpp src/songItem.cpp src/songListMan.cpp)
+add_library(${PROJECT_NAME} SHARED src/main.cpp src/songItem.cpp src/songListMan.cpp src/blacklistMan.cpp)
 
 # Set DEBUG_MODE only for Debug or RelWithDebInfo builds
 if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")

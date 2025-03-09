@@ -1,5 +1,8 @@
 # Change Log
 
+## v1.2.2
+Quality Of Life Change, Easily Blacklist Songs By clicking on the blacklist button
+
 ## v1.2.1
 Quality Of Life Change To Easily Set Menu Song,
 Just Press Play On The Song You Want And Exit

@@ -15,12 +15,12 @@ std::unordered_set<int> blacklistMan::blacklist;
 
 void blacklistMan::loadblacklist() {
     log::info("blacklistMan::loadblacklist");
-    blacklist = Mod::get()->getSavedValue<std::unordered_set<int>>(gd::string("blacklist@").append(songListMan::getDomain(),{}));
+    blacklist = Mod::get()->getSavedValue<std::unordered_set<int>>(gd::string("blacklist@") + songListMan::getDomain(),{});
 }
 
 void blacklistMan::saveBlacklist() {
     log::info("{}",blacklistMan::blacklist);
-    Mod::get()->setSavedValue(gd::string("blacklist@").append(songListMan::getDomain()),blacklistMan::blacklist);
+    Mod::get()->setSavedValue(gd::string("blacklist@") + songListMan::getDomain(),blacklistMan::blacklist);
 }
 
 bool blacklistMan::isblacklisted(int number) {

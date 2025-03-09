@@ -20,7 +20,7 @@ public:
     static void SaveM3U(const std::vector<songItem>& songs);
     static void SaveHTML(const std::vector<songItem>& songs);
     static std::vector<songItem> compileIntoVector(cocos2d::CCArray* List);
-    static gd::string getDomain();
+    static std::string getDomain();
     static std::ofstream openFile(std::string File);
 };
 

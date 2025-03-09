@@ -26,7 +26,7 @@ std::string escapeJsonString(const std::string& str) {
 /*
 * Gets The Current Domanin using km7dev's Server API
 */
-gd::string songListMan::getDomain()
+std::string songListMan::getDomain()
 {
     // Get the server URL
     std::string url = ServerAPIEvents::getCurrentServer().url;

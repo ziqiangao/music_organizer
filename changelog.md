@@ -1,5 +1,8 @@
 # Change Log
 
+## v1.3.0
+Migrate The List Saving Feature To Another mod
+
 ## v1.2.2
 Quality Of Life Change, Easily Blacklist Songs By clicking on the blacklist button
 

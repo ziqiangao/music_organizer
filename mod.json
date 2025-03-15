@@ -8,7 +8,7 @@
 	},
 	"id": "ziqgao.music_organizer",
 	"name": "Music Organizer",
-	"version": "v1.2.2",
+	"version": "v1.3.0",
 	"developer": "ZiqGao",
 	"description": "Mod To Organize All Downloaded Asserts Into Their GDPS Folders",
 	"dependencies": {
@@ -26,35 +26,6 @@
 			"name": "Song Folder",
 			"description": "This Will Over-ride the save location setting, Allows you to change the save directory",
 			"default": "{gd_save_dir}"
-		},
-		"exportlist":{
-			"type": "bool",
-			"name": "Save Song List",
-			"description": "Weather To Save The Saved Songs List Into The Song Folder Or Not",
-			"default":true
-		},
-		"listfmt":{
-			"type": "string",
-			"name": "List Format",
-			"enable-if": "exportlist",
-			"description": "Format To Export The List In",
-			"one-of": ["M3U","TXT","JSON","HTML"],
-			"default":"M3U"
-		},
-		"listname": {
-			"type": "string",
-			"default":"Saved Songs",
-			"name": "List Name",
-			"description": "Name Of The Exported List Without the Extension",
-			"enable-if": "exportlist",
-			"match": "^[^<>:\\\"/\\\\|?*]+$"
-
-		},
-		"listLocation":{
-			"type": "folder",
-			"name": "List Folder",
-			"description": "Change Where the List Is Saved",
-			"default": "{gd_dir}"
 		}
 	}
 }
